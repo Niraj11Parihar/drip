@@ -31,7 +31,7 @@ export default function MyOrdersPage({ cartItemCount, onOpenCart }) {
     }
     const fetchOrders = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/orders?email=${encodeURIComponent(user.email)}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders?email=${encodeURIComponent(user.email)}`);
         const data = await res.json();
         setOrders(data);
       } catch {

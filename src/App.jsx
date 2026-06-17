@@ -28,9 +28,9 @@ function AppInner() {
   const fetchData = async () => {
     try {
       const [settingsRes, productsRes, brandsRes] = await Promise.all([
-        fetch('http://localhost:5000/api/settings'),
-        fetch('http://localhost:5000/api/products'),
-        fetch('http://localhost:5000/api/brands')
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/settings`),
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/products`),
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/brands`)
       ]);
       if (!settingsRes.ok || !productsRes.ok) throw new Error('Backend unreachable');
       setSettings(await settingsRes.json());
