@@ -8,15 +8,15 @@ import Header from '../components/common/Header';
 export default function HomePage({ settings, products, brands, cartItemCount, onAddToCart, onOpenCart }) {
   const navigate = useNavigate();
 
-  const [search, setSearch]               = useState('');
-  const [selectedBrands, setSelectedBrands]         = useState([]);
-  const [selectedScales, setSelectedScales]         = useState([]);
+  const [search, setSearch] = useState('');
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedScales, setSelectedScales] = useState([]);
   const [selectedConditions, setSelectedConditions] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [priceMin, setPriceMin]           = useState('');
-  const [priceMax, setPriceMax]           = useState('');
-  const [onlyInStock, setOnlyInStock]     = useState(false);
-  const [sortOption, setSortOption]       = useState('featured');
+  const [priceMin, setPriceMin] = useState('');
+  const [priceMax, setPriceMax] = useState('');
+  const [onlyInStock, setOnlyInStock] = useState(false);
+  const [sortOption, setSortOption] = useState('featured');
 
   // Dynamic page title
   useEffect(() => {
@@ -35,8 +35,8 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
   };
 
   // Unique filter values
-  const uniqueBrands     = [...new Set(products.map(p => p.brand).filter(Boolean))];
-  const uniqueScales     = [...new Set(products.map(p => p.scale).filter(Boolean))];
+  const uniqueBrands = [...new Set(products.map(p => p.brand).filter(Boolean))];
+  const uniqueScales = [...new Set(products.map(p => p.scale).filter(Boolean))];
   const uniqueConditions = [...new Set(products.map(p => p.condition).filter(Boolean))];
   const uniqueCategories = [...new Set(products.map(p => p.category).filter(Boolean))];
 
@@ -58,8 +58,8 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
   const filtered = products.filter(p => {
     const q = search.toLowerCase();
     if (q && !p.name.toLowerCase().includes(q) && !(p.description || '').toLowerCase().includes(q)) return false;
-    if (selectedBrands.length     && !selectedBrands.includes(p.brand))     return false;
-    if (selectedScales.length     && !selectedScales.includes(p.scale))     return false;
+    if (selectedBrands.length && !selectedBrands.includes(p.brand)) return false;
+    if (selectedScales.length && !selectedScales.includes(p.scale)) return false;
     if (selectedConditions.length && !selectedConditions.includes(p.condition)) return false;
     if (selectedCategories.length && !selectedCategories.includes(p.category)) return false;
     if (priceMin !== '' && p.price < parseFloat(priceMin)) return false;
@@ -71,19 +71,19 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
   // Sort
   const sorted = [...filtered].sort((a, b) => {
     switch (sortOption) {
-      case 'price-asc':  return a.price - b.price;
+      case 'price-asc': return a.price - b.price;
       case 'price-desc': return b.price - a.price;
-      case 'name-asc':   return a.name.localeCompare(b.name);
-      case 'name-desc':  return b.name.localeCompare(a.name);
-      case 'year-desc':  return (b.year || 0) - (a.year || 0);
-      default:           return 0;
+      case 'name-asc': return a.name.localeCompare(b.name);
+      case 'name-desc': return b.name.localeCompare(a.name);
+      case 'year-desc': return (b.year || 0) - (a.year || 0);
+      default: return 0;
     }
   });
 
   const displayBrands = brands || [];
-  
+
   // double for infinite loop (or triple if list is very short)
-  const tickerBrands = [...displayBrands, ...displayBrands, ...displayBrands]; 
+  const tickerBrands = [...displayBrands, ...displayBrands, ...displayBrands];
 
   return (
     <>
@@ -134,9 +134,9 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
       <div className="brand-ticker" title="Hover to pause">
         <div className="brand-ticker-track">
           {tickerBrands.map((b, i) => (
-            <div className="brand-ticker-item" key={`${b.id || b.name}-${i}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-              <img src={b.imageUrl || 'https://images.unsplash.com/photo-1594787318286-3d835c1d207f?q=80&w=200&auto=format&fit=crop'} alt={b.name} style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
-              <span className="brand-ticker-name" style={{ fontSize: '0.85rem' }}>{b.name}</span>
+            <div className="brand-ticker-item" key={`${b.id || b.name}-${i}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+              <img src={b.imageUrl || 'https://images.unsplash.com/photo-1594787318286-3d835c1d207f?q=80&w=200&auto=format&fit=crop'} alt={b.name} style={{ width: '100px', height: '100px', objectFit: 'contain' }} />
+              <span className="brand-ticker-name" style={{ fontSize: '0.9rem' }}>{b.name}</span>
             </div>
           ))}
         </div>

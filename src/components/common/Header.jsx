@@ -12,7 +12,7 @@ export default function Header({ cartItemCount, onOpenCart, showSearch, searchVa
   const [authTab, setAuthTab] = useState('login');
   const [dropOpen, setDropOpen] = useState(false);
 
-  const openLogin    = () => { setAuthTab('login');    setAuthOpen(true); setDropOpen(false); };
+  const openLogin = () => { setAuthTab('login'); setAuthOpen(true); setDropOpen(false); };
   const openRegister = () => { setAuthTab('register'); setAuthOpen(true); };
 
   const handleLogout = () => {
@@ -32,7 +32,6 @@ export default function Header({ cartItemCount, onOpenCart, showSearch, searchVa
           {/* Logo */}
           <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
             <img src="/logo.png" alt="DiecastXpress Logo" />
-            <div className="logo-text"><span>Diecast</span>Xpress</div>
           </div>
 
           {/* Search (optional) */}
