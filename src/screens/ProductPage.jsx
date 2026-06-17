@@ -16,10 +16,11 @@ export default function ProductPage({ settings, products, cartItemCount, onAddTo
 
   const product = products.find(p => p.id === productId);
 
-  // Update page title + SEO whenever product changes
+  // Update page title + SEO whenever product  // Dynamic Title
   useEffect(() => {
-    if (!product || !settings) return;
-    document.title = `${product.name} (1:64 Diecast) | Buy Online India - ${settings.storeName}`;
+    if (product) {
+      document.title = `${product.name} (1:64 Diecast) | Buy Online India - ${settings?.storeName || 'DiecastXpress'}`;
+    }
   }, [product, settings]);
 
   // If product not found yet (loading) or invalid ID

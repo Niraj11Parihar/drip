@@ -20,7 +20,7 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
 
   // Dynamic page title
   useEffect(() => {
-    document.title = `${settings.storeName} - Buy Hot Wheels, Majorette & Diecast Cars Online India`;
+    document.title = `${settings.storeName || 'DiecastXpress'} - Buy Hot Wheels, Majorette & Diecast Cars Online India`;
   }, [settings]);
 
   // JSON-LD schema
