@@ -134,9 +134,9 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
       <div className="brand-ticker" title="Hover to pause">
         <div className="brand-ticker-track">
           {tickerBrands.map((b, i) => (
-            <div className="brand-ticker-item" key={`${b.id || b.name}-${i}`}>
-              <span className="brand-ticker-emoji">{b.icon || b.emoji}</span>
-              <span className="brand-ticker-name">{b.name}</span>
+            <div className="brand-ticker-item" key={`${b.id || b.name}-${i}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+              <img src={b.imageUrl || 'https://images.unsplash.com/photo-1594787318286-3d835c1d207f?q=80&w=200&auto=format&fit=crop'} alt={b.name} style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
+              <span className="brand-ticker-name" style={{ fontSize: '0.85rem' }}>{b.name}</span>
             </div>
           ))}
         </div>
