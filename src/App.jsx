@@ -116,7 +116,7 @@ function AppInner() {
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', background: '#f8f9fa', padding: '2rem', textAlign: 'center' }}>
         <h2 style={{ color: '#dc2626', marginBottom: '0.75rem', fontFamily: 'Montserrat, sans-serif' }}>Connection Error</h2>
         <p style={{ color: '#6b7280', lineHeight: '1.6', fontSize: '0.9rem', maxWidth: '480px' }}>
-          Backend not reachable on port 5000. Run <code>node server.js</code> inside <code>backend-api</code>.
+          Backend is currently unreachable or experiencing an error. Please check if the server is running and configured correctly.
         </p>
         <button className="btn btn-buy" onClick={fetchData} style={{ marginTop: '1.5rem', width: 'auto', padding: '0.75rem 2rem' }}>
           Retry Connection
