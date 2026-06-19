@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, ClipboardList, ChevronDown, Search } from 'lucide-react';
+import { ShoppingCart, User, LogOut, ClipboardList, ChevronDown, Search, Menu, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import AuthModal from '../modals/AuthModal';
 
@@ -11,15 +11,24 @@ export default function Header({ cartItemCount, onOpenCart, showSearch, searchVa
   const [authOpen, setAuthOpen] = useState(false);
   const [authTab, setAuthTab] = useState('login');
   const [dropOpen, setDropOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const openLogin = () => { setAuthTab('login'); setAuthOpen(true); setDropOpen(false); };
-  const openRegister = () => { setAuthTab('register'); setAuthOpen(true); };
+  const openLogin = () => { setAuthTab('login'); setAuthOpen(true); setDropOpen(false); setMobileMenuOpen(false); };
+  const openRegister = () => { setAuthTab('register'); setAuthOpen(true); setMobileMenuOpen(false); };
 
   const handleLogout = () => {
     logout();
     setDropOpen(false);
     navigate('/');
   };
+
+  const navLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'Shop All', href: '/#catalog-section' },
+    { label: 'New Arrivals', href: '/#new-arrivals' },
+    { label: 'Pre-Order', href: '/#pre-order' },
+    { label: 'Contact', href: '/#contact' },
+  ];
 
   return (
     <>
@@ -36,7 +45,7 @@ export default function Header({ cartItemCount, onOpenCart, showSearch, searchVa
 
           {/* Search (optional) */}
           {showSearch && (
-            <div style={{ position: 'relative', width: '320px' }}>
+            <div className="header-search-wrapper" style={{ position: 'relative', flex: 1, maxWidth: '420px', margin: '0 1rem' }}>
               <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} size={16} />
               <input
                 type="search"
@@ -72,10 +81,10 @@ export default function Header({ cartItemCount, onOpenCart, showSearch, searchVa
                   <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: '800', fontSize: '0.75rem', flexShrink: 0 }}>
                     {user.name?.charAt(0).toUpperCase() || 'U'}
                   </div>
-                  <span style={{ maxWidth: 90, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <span className="d-none-mobile" style={{ maxWidth: 90, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {user.name?.split(' ')[0]}
                   </span>
-                  <ChevronDown size={14} style={{ transition: 'transform 0.2s', transform: dropOpen ? 'rotate(180deg)' : 'none' }} />
+                  <ChevronDown size={14} className="d-none-mobile" style={{ transition: 'transform 0.2s', transform: dropOpen ? 'rotate(180deg)' : 'none' }} />
                 </button>
 
                 {dropOpen && (
@@ -111,24 +120,71 @@ export default function Header({ cartItemCount, onOpenCart, showSearch, searchVa
                 )}
               </div>
             ) : (
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                 <button
                   onClick={openLogin}
+                  className="d-none-mobile"
                   style={{ background: 'none', border: '1px solid #e5e7eb', borderRadius: '7px', padding: '0.4rem 0.85rem', cursor: 'pointer', fontFamily: 'Outfit, sans-serif', fontWeight: '700', fontSize: '0.8rem', color: '#374151', transition: 'all 0.15s' }}
                 >
                   Sign In
                 </button>
                 <button
                   onClick={openRegister}
-                  className="btn btn-buy"
+                  className="btn btn-buy d-none-mobile"
                   style={{ width: 'auto', padding: '0.4rem 0.85rem', fontSize: '0.8rem' }}
                 >
                   Register
                 </button>
+                {/* Mobile: user icon shortcut */}
+                <button onClick={openLogin} className="cart-trigger mobile-user-btn" aria-label="Sign in">
+                  <User size={20} />
+                </button>
+              </div>
+            )}
+
+            {/* Hamburger for mobile nav */}
+            <button
+              className="hamburger-btn"
+              onClick={() => setMobileMenuOpen(m => !m)}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </div>
+
+        {/* ── SUB NAVIGATION BAR (desktop only) ── */}
+        <nav className="sub-nav">
+          <div className="sub-nav-inner">
+            {navLinks.map(link => (
+              <a key={link.label} href={link.href} className="sub-nav-link">
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </nav>
+
+        {/* ── MOBILE MENU DRAWER ── */}
+        {mobileMenuOpen && (
+          <div className="mobile-nav-drawer">
+            {navLinks.map(link => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="mobile-nav-link"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {link.label}
+              </a>
+            ))}
+            {!user && (
+              <div style={{ borderTop: '1px solid #f3f4f6', paddingTop: '0.75rem', marginTop: '0.25rem', display: 'flex', gap: '0.5rem' }}>
+                <button onClick={openLogin} style={{ flex: 1, background: 'none', border: '1px solid #e5e7eb', borderRadius: '7px', padding: '0.55rem', cursor: 'pointer', fontWeight: '700', fontSize: '0.82rem', color: '#374151' }}>Sign In</button>
+                <button onClick={openRegister} className="btn btn-buy" style={{ flex: 1, padding: '0.55rem', fontSize: '0.82rem' }}>Register</button>
               </div>
             )}
           </div>
-        </div>
+        )}
       </header>
 
       <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} defaultTab={authTab} />

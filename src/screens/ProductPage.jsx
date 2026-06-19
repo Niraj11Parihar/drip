@@ -97,7 +97,7 @@ export default function ProductPage({ settings, products, cartItemCount, onAddTo
         <div className="container" style={{ paddingTop: '2rem' }}>
 
           {/* Product columns */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: '3rem', marginBottom: '3.5rem' }}>
+          <div className="product-split" style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: '3rem', marginBottom: '3.5rem' }}>
 
             {/* Left: Image */}
             <div style={{ position: 'relative' }}>
