@@ -4,13 +4,16 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null); // { id, name, email, phone, address }
+  const [token, setToken] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
   // Restore session from localStorage on mount
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('dx_user');
-      if (saved) setUser(JSON.parse(saved));
+      const savedUser = localStorage.getItem('dx_user');
+      const savedToken = localStorage.getItem('dx_token');
+      if (savedUser) setUser(JSON.parse(savedUser));
+      if (savedToken) setToken(savedToken);
     } catch (_) {}
     setAuthLoading(false);
   }, []);
@@ -23,11 +26,12 @@ export function AuthProvider({ children }) {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Login failed');
-    // Strip password before storing
-    const { password: _, ...safeUser } = data.user;
-    setUser(safeUser);
-    localStorage.setItem('dx_user', JSON.stringify(safeUser));
-    return safeUser;
+    
+    setUser(data.user);
+    setToken(data.token);
+    localStorage.setItem('dx_user', JSON.stringify(data.user));
+    localStorage.setItem('dx_token', data.token);
+    return data.user;
   };
 
   const register = async (name, email, phone, password) => {
@@ -38,15 +42,19 @@ export function AuthProvider({ children }) {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Registration failed');
-    const { password: _, ...safeUser } = data.user;
-    setUser(safeUser);
-    localStorage.setItem('dx_user', JSON.stringify(safeUser));
-    return safeUser;
+    
+    setUser(data.user);
+    setToken(data.token);
+    localStorage.setItem('dx_user', JSON.stringify(data.user));
+    localStorage.setItem('dx_token', data.token);
+    return data.user;
   };
 
   const logout = () => {
     setUser(null);
+    setToken(null);
     localStorage.removeItem('dx_user');
+    localStorage.removeItem('dx_token');
   };
 
   // Update locally cached profile (after order, etc.)
@@ -57,7 +65,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, authLoading, login, register, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, token, authLoading, login, register, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

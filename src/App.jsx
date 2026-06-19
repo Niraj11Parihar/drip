@@ -16,6 +16,18 @@ function AppInner() {
   const [products, setProducts] = useState([]);
   const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState(null); // { message, type }
+
+  const showToast = (message, type = 'error') => {
+    setToast({ message, type });
+  };
+
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
 
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -53,7 +65,7 @@ function AppInner() {
     setCart(prev => {
       const existing = prev.find(i => i.id === product.id);
       if (existing) {
-        if (existing.quantity >= product.stock) { alert(`Only ${product.stock} units in stock.`); return prev; }
+        if (existing.quantity >= product.stock) { showToast(`Only ${product.stock} units in stock.`, 'error'); return prev; }
         return prev.map(i => i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i);
       }
       return [...prev, { ...product, quantity: 1 }];
@@ -66,7 +78,7 @@ function AppInner() {
         if (item.id !== id) return item;
         const next = item.quantity + delta;
         if (next <= 0) return null;
-        if (next > item.stock) { alert(`Only ${item.stock} in stock.`); return item; }
+        if (next > item.stock) { showToast(`Only ${item.stock} in stock.`, 'error'); return item; }
         return { ...item, quantity: next };
       }).filter(Boolean)
     );
@@ -267,6 +279,22 @@ function AppInner() {
               View My Orders
             </button>
           </div>
+        </div>
+      )}
+
+      {/* ── CUSTOM TOAST NOTIFICATION ── */}
+      {toast && (
+        <div style={{
+          position: 'fixed', bottom: '24px', right: '24px',
+          background: toast.type === 'error' ? '#ef4444' : '#10b981',
+          color: '#fff', padding: '0.75rem 1.25rem', borderRadius: '8px',
+          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+          zIndex: 9999, fontWeight: '700', fontSize: '0.85rem',
+          display: 'flex', alignItems: 'center', gap: '0.5rem',
+          animation: 'slideUp 0.3s ease',
+          fontFamily: 'Outfit, sans-serif'
+        }}>
+          {toast.message}
         </div>
       )}
 

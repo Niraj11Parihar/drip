@@ -28,7 +28,7 @@ const checkPincode = (pin) => {
 const STEPS = ['details', 'payment', 'processing', 'success'];
 
 export default function CheckoutModal({ isOpen, onClose, cart, total, onOrderSuccess, onBackToCart }) {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
 
   const [step, setStep] = useState('details');
   const [pincodeResult, setPincodeResult] = useState(null);
@@ -99,7 +99,10 @@ export default function CheckoutModal({ isOpen, onClose, cart, total, onOrderSuc
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           customerName: details.name,
           email: details.email,
