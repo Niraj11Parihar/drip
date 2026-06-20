@@ -5,15 +5,15 @@ import { useAuth } from '../context/AuthContext';
 import Header from '../components/common/Header';
 
 const STATUS_STYLES = {
-  'Pending':    { bg: '#fef9c3', color: '#854d0e', icon: <Clock size={12} /> },
+  'Pending': { bg: '#fef9c3', color: '#854d0e', icon: <Clock size={12} /> },
   'Processing': { bg: '#dbeafe', color: '#1e40af', icon: <PackageCheck size={12} /> },
-  'Shipped':    { bg: '#e0f2fe', color: '#0369a1', icon: <Truck size={12} /> },
-  'Delivered':  { bg: '#dcfce7', color: '#166534', icon: <PackageCheck size={12} /> },
-  'Cancelled':  { bg: '#fee2e2', color: '#991b1b', icon: <Clock size={12} /> },
+  'Shipped': { bg: '#e0f2fe', color: '#0369a1', icon: <Truck size={12} /> },
+  'Delivered': { bg: '#dcfce7', color: '#166534', icon: <PackageCheck size={12} /> },
+  'Cancelled': { bg: '#fee2e2', color: '#991b1b', icon: <Clock size={12} /> },
 };
 
 export default function MyOrdersPage({ cartItemCount, onOpenCart }) {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const navigate = useNavigate();
 
   const [orders, setOrders] = useState([]);
@@ -31,9 +31,16 @@ export default function MyOrdersPage({ cartItemCount, onOpenCart }) {
     }
     const fetchOrders = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders?email=${encodeURIComponent(user.email)}`);
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders?email=${encodeURIComponent(user.email)}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          }
+        );
         const data = await res.json();
-        setOrders(data);
+        setOrders(Array.isArray(data) ? data : []);
       } catch {
         setOrders([]);
       } finally {
