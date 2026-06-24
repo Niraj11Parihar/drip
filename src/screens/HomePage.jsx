@@ -109,10 +109,31 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
   const shopSchema = {
     '@context': 'https://schema.org',
     '@type': 'Store',
-    name: settings.storeName,
-    description: 'Buy Hot Wheels, Majorette, Matchbox & rare diecast cars online in India.',
-    url: window.location.origin,
+    name: settings.storeName || 'DiecastXpress',
+    description: 'Buy Hot Wheels, Majorette, Matchbox & rare diecast cars online in India. 1:64 scale collectibles, Super Treasure Hunts, Car Culture and more.',
+    url: 'https://diecastxpress.com',
+    image: 'https://diecastxpress.com/logo.png',
     priceRange: '₹₹',
+    telephone: '+91-98765-43210',
+    email: 'support@diecastxpress.in',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Mumbai',
+      addressRegion: 'Maharashtra',
+      postalCode: '400001',
+      addressCountry: 'IN',
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        opens: '10:00',
+        closes: '20:00',
+      },
+    ],
+    currenciesAccepted: 'INR',
+    paymentAccepted: 'Cash, Credit Card, UPI',
+    areaServed: 'IN',
   };
 
   // Filter options (memoized)
@@ -535,6 +556,83 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOT WHEELS SEO CONTENT SECTION ── */}
+      <section
+        id="hot-wheels-collection"
+        style={{ background: '#fff', padding: '3.5rem 0', borderTop: '1px solid var(--border-color)' }}
+        aria-label="Hot Wheels Diecast Cars Collection India"
+      >
+        <div className="container">
+          <div style={{ maxWidth: '860px', margin: '0 auto' }}>
+            <div style={{ marginBottom: '2rem' }}>
+              <span style={{ fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--primary)', display: 'block', marginBottom: '0.4rem' }}>🚗 Collector's Guide</span>
+              <h2 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '1.75rem', fontWeight: '900', color: 'var(--text-primary)', lineHeight: '1.2', marginBottom: '0.75rem' }}>
+                Buy <span style={{ color: 'var(--primary)' }}>Hot Wheels Diecast Cars</span> Online in India
+              </h2>
+              <div style={{ width: '48px', height: '4px', background: 'var(--primary)', borderRadius: '2px' }} />
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+              {[
+                { emoji: '🏎️', title: 'Hot Wheels Mainline', desc: 'The classic 1:64 scale cars updated every year. Affordable collectibles for every budget.' },
+                { emoji: '⭐', title: 'Hot Wheels Premium', desc: 'Car Culture, Boulevard & premium series with real-rider wheels and detailed interiors.' },
+                { emoji: '💎', title: 'Treasure Hunts', desc: 'Super Treasure Hunts are rare chase cars — the most sought-after finds in every case.' },
+                { emoji: '🌏', title: 'Import Exclusives', desc: 'Japan, USA & European exclusive models not easily found in Indian retail stores.' },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  style={{ background: '#f9fafb', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '1.25rem', cursor: 'pointer', transition: 'all 0.2s ease' }}
+                  onClick={() => document.getElementById('catalog-section')?.scrollIntoView({ behavior: 'smooth' })}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(220,38,38,0.1)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.boxShadow = 'none'; }}
+                >
+                  <div style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>{item.emoji}</div>
+                  <div style={{ fontWeight: '800', fontSize: '0.9rem', marginBottom: '0.3rem', fontFamily: 'Montserrat, sans-serif' }}>{item.title}</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>{item.desc}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.85', display: 'grid', gap: '1rem' }}>
+              <p>
+                Hot Wheels is one of the most popular diecast car brands for collectors and kids across India.
+                At <strong>DiecastXpress</strong>, you can explore the full range of <strong>Hot Wheels 1:64 scale cars</strong>,
+                premium series like <strong>Car Culture</strong>, <strong>Boulevard</strong>, <strong>Fast & Furious</strong>,
+                character cars, limited editions, and the latest diecast models — all at competitive prices with
+                safe bubble-wrap packaging and pan-India delivery.
+              </p>
+              <p>
+                We regularly update our <strong>Hot Wheels collection in India</strong> with new mainline arrivals,
+                Super Treasure Hunts, and collector-friendly products. Whether you're looking for
+                <strong> buy Hot Wheels cars online India</strong> for your personal collection or gifting,
+                DiecastXpress is your most trusted destination. Our catalog includes models across series such as
+                HW Race Day, HW Screen Time, HW Exotics, HW Turbo, and many more.
+              </p>
+              <p>
+                Looking for <strong>Hot Wheels premium cars India</strong>? Our premium selection includes Real Riders,
+                detailed engine bays, authentic rubber tires, and licensed body shapes straight from renowned car manufacturers.
+                These are perfect for display collectors who want showpiece-quality diecast models.
+              </p>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                <strong>Popular searches:</strong> buy hot wheels cars online india · hot wheels diecast cars india ·
+                hot wheels premium cars india · hot wheels 1:64 scale · hot wheels collection india ·
+                super treasure hunt india · majorette diecast india · matchbox cars online india
+              </p>
+            </div>
+
+            <div style={{ marginTop: '1.75rem', textAlign: 'center' }}>
+              <button
+                className="btn btn-buy"
+                style={{ width: 'auto', padding: '0.85rem 2.5rem' }}
+                onClick={() => document.getElementById('catalog-section')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                Browse All Hot Wheels Cars <ArrowRight size={16} />
+              </button>
+            </div>
           </div>
         </div>
       </section>

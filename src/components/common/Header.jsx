@@ -26,6 +26,7 @@ export default function Header({ cartItemCount, onOpenCart, showSearch, searchVa
     { label: 'Home', href: '/' },
     { label: 'Shop All', href: '/#catalog-section' },
     { label: 'New Arrivals', href: '/#new-arrivals' },
+    { label: '📝 Blog', href: '/blog' },
     { label: 'Pre-Order', href: '/#pre-order' },
     { label: 'Contact', href: '/#contact' },
   ];

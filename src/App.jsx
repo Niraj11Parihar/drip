@@ -7,6 +7,7 @@ import AuthModal from './components/modals/AuthModal';
 import HomePage from './screens/HomePage';
 import ProductPage from './screens/ProductPage';
 import MyOrdersPage from './screens/MyOrdersPage';
+import BlogPage from './screens/BlogPage';
 
 // Inner app wrapped inside AuthProvider so useAuth() works
 function AppInner() {
@@ -158,6 +159,7 @@ function AppInner() {
         <Route path="/" element={<HomePage {...sharedProps} />} />
         <Route path="/product/:productId" element={<ProductPage {...sharedProps} />} />
         <Route path="/orders" element={<MyOrdersPage cartItemCount={cartItemCount} onOpenCart={() => setCartOpen(true)} />} />
+        <Route path="/blog" element={<BlogPage cartItemCount={cartItemCount} onOpenCart={() => setCartOpen(true)} />} />
         <Route path="*" element={<HomePage {...sharedProps} />} />
       </Routes>
 

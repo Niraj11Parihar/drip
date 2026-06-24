@@ -16,11 +16,53 @@ export default function ProductPage({ settings, products, cartItemCount, onAddTo
 
   const product = products.find(p => p.id === productId);
 
-  // Update page title + SEO whenever product  // Dynamic Title
+  // Update page title + all SEO meta tags dynamically per product
   useEffect(() => {
-    if (product) {
-      document.title = `${product.name} (1:64 Diecast) | Buy Online India - ${settings?.storeName || 'DiecastXpress'}`;
-    }
+    if (!product) return;
+
+    const storeName = settings?.storeName || 'DiecastXpress';
+    const title = `${product.brand} ${product.name} ${product.scale} Diecast Car | Buy Online India - ${storeName}`;
+    const description = `Buy ${product.brand} ${product.name} ${product.scale} scale diecast car online in India at ${storeName}. ${product.description ? product.description.slice(0, 100) + '...' : 'Authentic collectible model with safe packaging and pan-India delivery.'} Price: ₹${product.price}.`;
+    const imageUrl = product.images?.[0]?.url || product.imageUrl || '';
+    const pageUrl = `https://diecastxpress.com/product/${product.id}`;
+
+    // Title
+    document.title = title;
+
+    // Helper to set/create meta
+    const setMeta = (selector, content) => {
+      let el = document.querySelector(selector);
+      if (!el) { el = document.createElement('meta'); document.head.appendChild(el); }
+      el.setAttribute('content', content);
+    };
+    const setLink = (rel, href) => {
+      let el = document.querySelector(`link[rel='${rel}']`);
+      if (!el) { el = document.createElement('link'); el.rel = rel; document.head.appendChild(el); }
+      el.href = href;
+    };
+
+    setMeta('meta[name="description"]', description);
+    setLink('canonical', pageUrl);
+
+    // Open Graph
+    setMeta('meta[property="og:title"]', title);
+    setMeta('meta[property="og:description"]', description);
+    setMeta('meta[property="og:image"]', imageUrl);
+    setMeta('meta[property="og:url"]', pageUrl);
+    setMeta('meta[property="og:type"]', 'product');
+
+    // Twitter
+    setMeta('meta[name="twitter:title"]', title);
+    setMeta('meta[name="twitter:description"]', description);
+    setMeta('meta[name="twitter:image"]', imageUrl);
+
+    // Cleanup: restore homepage meta on unmount
+    return () => {
+      document.title = `${storeName} – Buy Hot Wheels, Majorette & Diecast Cars Online India`;
+      setLink('canonical', 'https://diecastxpress.com/');
+      setMeta('meta[property="og:type"]', 'website');
+      setMeta('meta[property="og:url"]', 'https://diecastxpress.com/');
+    };
   }, [product, settings]);
 
   // If product not found yet (loading) or invalid ID
@@ -54,26 +96,52 @@ export default function ProductPage({ settings, products, cartItemCount, onAddTo
     setTimeout(() => setAddedFeedback(false), 2000);
   };
 
-  // JSON-LD product schema
+  // JSON-LD product schema (enhanced)
   const productSchema = {
     '@context': 'https://schema.org/',
     '@type': 'Product',
-    name: product.name,
+    name: `${product.brand} ${product.name} ${product.scale} Diecast Car`,
     image: product.images && product.images.length > 0 ? product.images.map(img => img.url) : [product.imageUrl],
-    description: product.description,
+    description: product.description || `${product.brand} ${product.name} is a ${product.scale} scale diecast collectible car. Suitable for collectors, gifting, and display. Available at DiecastXpress.`,
     sku: product.id,
+    mpn: product.id,
     brand: { '@type': 'Brand', name: product.brand },
+    category: product.category,
+    material: 'Diecast Metal Body with Plastic Parts',
+    url: `https://diecastxpress.com/product/${product.id}`,
     offers: {
       '@type': 'Offer',
+      url: `https://diecastxpress.com/product/${product.id}`,
       priceCurrency: 'INR',
       price: product.price,
+      priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
       availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: { '@type': 'Organization', name: 'DiecastXpress' },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: { '@type': 'MonetaryAmount', value: product.price >= 999 ? '0' : '99', currency: 'INR' },
+        deliveryTime: { '@type': 'ShippingDeliveryTime', businessDays: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '09:00', closes: '18:00' }, cutoffTime: '18:00:00' }
+      }
     },
+  };
+
+  // BreadcrumbList schema
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://diecastxpress.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Collections', item: 'https://diecastxpress.com/#catalog-section' },
+      { '@type': 'ListItem', position: 3, name: product.brand, item: `https://diecastxpress.com/?brand=${encodeURIComponent(product.brand)}` },
+      { '@type': 'ListItem', position: 4, name: product.name, item: `https://diecastxpress.com/product/${product.id}` },
+    ],
   };
 
   return (
     <>
       <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
+      <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
 
       {/* ── HEADER (shared, auth-aware) ── */}
       <Header cartItemCount={cartItemCount} onOpenCart={onOpenCart} />
@@ -129,7 +197,7 @@ export default function ProductPage({ settings, products, cartItemCount, onAddTo
                         opacity: selectedImageIdx === idx ? 1 : 0.6
                       }}
                     >
-                      <img src={img.url} alt={`Thumbnail ${idx+1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <img src={img.url} alt={`${product.name} - View ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                   ))}
                 </div>
