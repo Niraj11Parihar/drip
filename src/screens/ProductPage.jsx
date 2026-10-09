@@ -8,7 +8,7 @@ import Header from '../components/common/Header';
 
 export default function ProductPage({ settings, products, cartItemCount, onAddToCart, onOpenCart }) {
   const { productId } = useParams();   // reads /product/:productId from URL
-  const navigate      = useNavigate();
+  const navigate = useNavigate();
 
   const [qty, setQty] = useState(1);
   const [addedFeedback, setAddedFeedback] = useState(false);
@@ -20,7 +20,7 @@ export default function ProductPage({ settings, products, cartItemCount, onAddTo
   useEffect(() => {
     if (!product) return;
 
-    const storeName = settings?.storeName || 'DiecastXpress';
+    const storeName = settings?.storeName || 'drip';
     const title = `${product.brand} ${product.name} ${product.scale} Diecast Car | Buy Online India - ${storeName}`;
     const description = `Buy ${product.brand} ${product.name} ${product.scale} scale diecast car online in India at ${storeName}. ${product.description ? product.description.slice(0, 100) + '...' : 'Authentic collectible model with safe packaging and pan-India delivery.'} Price: ₹${product.price}.`;
     const imageUrl = product.images?.[0]?.url || product.imageUrl || '';
@@ -102,7 +102,7 @@ export default function ProductPage({ settings, products, cartItemCount, onAddTo
     '@type': 'Product',
     name: `${product.brand} ${product.name} ${product.scale} Diecast Car`,
     image: product.images && product.images.length > 0 ? product.images.map(img => img.url) : [product.imageUrl],
-    description: product.description || `${product.brand} ${product.name} is a ${product.scale} scale diecast collectible car. Suitable for collectors, gifting, and display. Available at DiecastXpress.`,
+    description: product.description || `${product.brand} ${product.name} is a ${product.scale} scale diecast collectible car. Suitable for collectors, gifting, and display. Available at drip.`,
     sku: product.id,
     mpn: product.id,
     brand: { '@type': 'Brand', name: product.brand },
@@ -117,11 +117,11 @@ export default function ProductPage({ settings, products, cartItemCount, onAddTo
       priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
       availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       itemCondition: 'https://schema.org/NewCondition',
-      seller: { '@type': 'Organization', name: 'DiecastXpress' },
+      seller: { '@type': 'Organization', name: 'drip' },
       shippingDetails: {
         '@type': 'OfferShippingDetails',
         shippingRate: { '@type': 'MonetaryAmount', value: product.price >= 999 ? '0' : '99', currency: 'INR' },
-        deliveryTime: { '@type': 'ShippingDeliveryTime', businessDays: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '09:00', closes: '18:00' }, cutoffTime: '18:00:00' }
+        deliveryTime: { '@type': 'ShippingDeliveryTime', businessDays: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '18:00' }, cutoffTime: '18:00:00' }
       }
     },
   };
@@ -187,11 +187,11 @@ export default function ProductPage({ settings, products, cartItemCount, onAddTo
               {product.images && product.images.length > 1 && (
                 <div style={{ display: 'flex', gap: '0.8rem', marginTop: '1rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
                   {product.images.map((img, idx) => (
-                    <div 
-                      key={idx} 
+                    <div
+                      key={idx}
                       onClick={() => setSelectedImageIdx(idx)}
-                      style={{ 
-                        width: '70px', height: '70px', borderRadius: '8px', overflow: 'hidden', 
+                      style={{
+                        width: '70px', height: '70px', borderRadius: '8px', overflow: 'hidden',
                         border: selectedImageIdx === idx ? '2px solid var(--primary)' : '1px solid var(--border-color)',
                         cursor: 'pointer', flexShrink: 0, transition: 'all 0.2s ease',
                         opacity: selectedImageIdx === idx ? 1 : 0.6
@@ -316,8 +316,8 @@ export default function ProductPage({ settings, products, cartItemCount, onAddTo
               {/* Trust icons */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.6rem' }}>
                 {[
-                  { icon: <Truck size={16} />,      text: 'Free Ship ₹999+' },
-                  { icon: <RotateCcw size={16} />,  text: '7-Day Returns' },
+                  { icon: <Truck size={16} />, text: 'Free Ship ₹999+' },
+                  { icon: <RotateCcw size={16} />, text: '7-Day Returns' },
                   { icon: <CheckCircle size={16} />, text: '100% Authentic' },
                 ].map((item, i) => (
                   <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem', textAlign: 'center', background: '#f9fafb', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0.6rem 0.4rem', fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
@@ -347,12 +347,12 @@ export default function ProductPage({ settings, products, cartItemCount, onAddTo
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
                 <tbody>
                   {[
-                    ['Brand',            product.brand],
-                    ['Scale',            product.scale],
-                    ['Card Condition',   product.condition],
-                    ['Release Year',     product.year],
+                    ['Brand', product.brand],
+                    ['Scale', product.scale],
+                    ['Card Condition', product.condition],
+                    ['Release Year', product.year],
                     ['Category / Series', product.category],
-                    ['Material',         'Diecast Metal Body with Plastic Parts'],
+                    ['Material', 'Diecast Metal Body with Plastic Parts'],
                   ].map(([label, value], idx) => (
                     <tr key={idx} style={{ borderBottom: idx < 5 ? '1px solid var(--border-color)' : 'none' }}>
                       <td style={{ padding: '0.8rem 1.2rem', background: '#f9fafb', width: '28%', fontWeight: '700', color: '#4b5563', fontSize: '0.82rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</td>
@@ -427,7 +427,7 @@ export default function ProductPage({ settings, products, cartItemCount, onAddTo
             <a href="#">Contact Us</a>
           </div>
           <p style={{ fontSize: '0.72rem', opacity: 0.5, marginTop: '1rem' }}>
-            © {new Date().getFullYear()} DiecastXpress. All Rights Reserved.
+            © {new Date().getFullYear()} drip. All Rights Reserved.
           </p>
         </div>
       </footer>

@@ -103,13 +103,13 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
 
   // SEO
   React.useEffect(() => {
-    document.title = `${settings.storeName || 'DiecastXpress'} – Buy Hot Wheels, Majorette & Diecast Cars Online India`;
+    document.title = `${settings.storeName || 'drip'} – Buy Hot Wheels, Majorette & Diecast Cars Online India`;
   }, [settings]);
 
   const shopSchema = {
     '@context': 'https://schema.org',
     '@type': 'Store',
-    name: settings.storeName || 'DiecastXpress',
+    name: settings.storeName || 'drip',
     description: 'Buy Hot Wheels, Majorette, Matchbox & rare diecast cars online in India. 1:64 scale collectibles, Super Treasure Hunts, Car Culture and more.',
     url: 'https://diecastxpress.com',
     image: 'https://diecastxpress.com/logo.png',
@@ -137,8 +137,8 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
   };
 
   // Filter options (memoized)
-  const uniqueBrands     = useMemo(() => [...new Set(products.map(p => p.brand).filter(Boolean))], [products]);
-  const uniqueScales     = useMemo(() => [...new Set(products.map(p => p.scale).filter(Boolean))], [products]);
+  const uniqueBrands = useMemo(() => [...new Set(products.map(p => p.brand).filter(Boolean))], [products]);
+  const uniqueScales = useMemo(() => [...new Set(products.map(p => p.scale).filter(Boolean))], [products]);
   const uniqueConditions = useMemo(() => [...new Set(products.map(p => p.condition).filter(Boolean))], [products]);
   const uniqueCategories = useMemo(() => [...new Set(products.map(p => p.category).filter(Boolean))], [products]);
 
@@ -173,11 +173,11 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
     });
     return [...filtered].sort((a, b) => {
       switch (sortOption) {
-        case 'price-asc':  return a.price - b.price;
+        case 'price-asc': return a.price - b.price;
         case 'price-desc': return b.price - a.price;
-        case 'name-asc':   return a.name.localeCompare(b.name);
-        case 'name-desc':  return b.name.localeCompare(a.name);
-        case 'year-desc':  return (b.year || 0) - (a.year || 0);
+        case 'name-asc': return a.name.localeCompare(b.name);
+        case 'name-desc': return b.name.localeCompare(a.name);
+        case 'year-desc': return (b.year || 0) - (a.year || 0);
         default: return 0;
       }
     });
@@ -216,8 +216,8 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
   // Promo banner data
   const promoBanners = [
     { label: 'New Arrivals', icon: <Sparkles size={22} />, color: '#dc2626', bg: 'linear-gradient(135deg,#dc2626,#7f1d1d)', desc: 'Latest drops just landed' },
-    { label: 'JDM Classics', icon: <Flame size={22} />,     color: '#d97706', bg: 'linear-gradient(135deg,#d97706,#78350f)', desc: 'Japanese legends in 1:64' },
-    { label: 'Deals & Sales', icon: <Package size={22} />,  color: '#059669', bg: 'linear-gradient(135deg,#059669,#064e3b)', desc: 'Up to 40% off on select models' },
+    { label: 'JDM Classics', icon: <Flame size={22} />, color: '#d97706', bg: 'linear-gradient(135deg,#d97706,#78350f)', desc: 'Japanese legends in 1:64' },
+    { label: 'Deals & Sales', icon: <Package size={22} />, color: '#059669', bg: 'linear-gradient(135deg,#059669,#064e3b)', desc: 'Up to 40% off on select models' },
   ];
 
   return (
@@ -514,10 +514,10 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
                           p === '...'
                             ? <span key={`ellipsis-${idx}`} className="pagination-ellipsis">…</span>
                             : <button
-                                key={p}
-                                className={`pagination-page ${p === currentPage ? 'active' : ''}`}
-                                onClick={() => handlePageChange(p)}
-                              >{p}</button>
+                              key={p}
+                              className={`pagination-page ${p === currentPage ? 'active' : ''}`}
+                              onClick={() => handlePageChange(p)}
+                            >{p}</button>
                         )
                       }
                     </div>
@@ -600,7 +600,7 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
             <div style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.85', display: 'grid', gap: '1rem' }}>
               <p>
                 Hot Wheels is one of the most popular diecast car brands for collectors and kids across India.
-                At <strong>DiecastXpress</strong>, you can explore the full range of <strong>Hot Wheels 1:64 scale cars</strong>,
+                At <strong>drip</strong>, you can explore the full range of <strong>Hot Wheels 1:64 scale cars</strong>,
                 premium series like <strong>Car Culture</strong>, <strong>Boulevard</strong>, <strong>Fast & Furious</strong>,
                 character cars, limited editions, and the latest diecast models — all at competitive prices with
                 safe bubble-wrap packaging and pan-India delivery.
@@ -609,7 +609,7 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
                 We regularly update our <strong>Hot Wheels collection in India</strong> with new mainline arrivals,
                 Super Treasure Hunts, and collector-friendly products. Whether you're looking for
                 <strong> buy Hot Wheels cars online India</strong> for your personal collection or gifting,
-                DiecastXpress is your most trusted destination. Our catalog includes models across series such as
+                drip is your most trusted destination. Our catalog includes models across series such as
                 HW Race Day, HW Screen Time, HW Exotics, HW Turbo, and many more.
               </p>
               <p>
@@ -707,7 +707,7 @@ export default function HomePage({ settings, products, brands, cartItemCount, on
           </div>
 
           <div className="footer-bottom">
-            <p>© {new Date().getFullYear()} DiecastXpress. All Rights Reserved.</p>
+            <p>© {new Date().getFullYear()} drip. All Rights Reserved.</p>
             <p style={{ fontSize: '0.7rem', color: '#6b7280' }}>Made with ❤️ for Diecast Collectors across India</p>
           </div>
         </div>

@@ -7,13 +7,13 @@ const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const CATEGORY_COLORS = {
   'Hot Wheels': { bg: '#dc2626', light: '#fef2f2', text: '#991b1b' },
-  'Majorette':  { bg: '#7c3aed', light: '#f5f3ff', text: '#5b21b6' },
-  'Matchbox':   { bg: '#0891b2', light: '#ecfeff', text: '#155e75' },
+  'Majorette': { bg: '#7c3aed', light: '#f5f3ff', text: '#5b21b6' },
+  'Matchbox': { bg: '#0891b2', light: '#ecfeff', text: '#155e75' },
   'Collecting Tips': { bg: '#d97706', light: '#fffbeb', text: '#92400e' },
   'New Arrivals': { bg: '#059669', light: '#ecfdf5', text: '#065f46' },
-  'Reviews':    { bg: '#db2777', light: '#fdf2f8', text: '#9d174d' },
-  'Events':     { bg: '#ea580c', light: '#fff7ed', text: '#9a3412' },
-  'General':    { bg: '#6b7280', light: '#f9fafb', text: '#374151' },
+  'Reviews': { bg: '#db2777', light: '#fdf2f8', text: '#9d174d' },
+  'Events': { bg: '#ea580c', light: '#fff7ed', text: '#9a3412' },
+  'General': { bg: '#6b7280', light: '#f9fafb', text: '#374151' },
 };
 
 const CATEGORIES = ['All', 'Hot Wheels', 'Majorette', 'Matchbox', 'Collecting Tips', 'New Arrivals', 'Reviews', 'Events', 'General'];
@@ -39,7 +39,7 @@ function FeaturedCard({ post, onClick }) {
     >
       {/* Gradient overlay */}
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)' }} />
-      
+
       {/* Featured badge */}
       <div style={{ position: 'absolute', top: '20px', left: '20px', display: 'flex', gap: '0.5rem' }}>
         <span style={{ background: '#f59e0b', color: '#111', fontSize: '0.7rem', fontWeight: '800', padding: '0.3rem 0.75rem', borderRadius: '999px', display: 'flex', alignItems: 'center', gap: '0.3rem', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
@@ -261,7 +261,7 @@ export default function BlogPage({ cartItemCount, onOpenCart }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = 'Diecast Blog – Hot Wheels Collecting Tips & News | DiecastXpress';
+    document.title = 'Diecast Blog – Hot Wheels Collecting Tips & News | drip';
     fetch(`${API}/api/blogs`)
       .then(r => r.json())
       .then(data => setPosts(Array.isArray(data) ? data : []))
@@ -271,10 +271,10 @@ export default function BlogPage({ cartItemCount, onOpenCart }) {
 
   useEffect(() => {
     if (openPost) {
-      document.title = `${openPost.title} | DiecastXpress Blog`;
+      document.title = `${openPost.title} | drip Blog`;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      document.title = 'Diecast Blog – Hot Wheels Collecting Tips & News | DiecastXpress';
+      document.title = 'Diecast Blog – Hot Wheels Collecting Tips & News | drip';
     }
   }, [openPost]);
 
@@ -336,7 +336,7 @@ export default function BlogPage({ cartItemCount, onOpenCart }) {
                 <Flame size={13} /> Collector's Journal
               </div>
               <h1 style={{ fontFamily: 'Montserrat,sans-serif', fontSize: 'clamp(2rem,5vw,3.5rem)', fontWeight: '900', color: '#fff', lineHeight: '1.1', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
-                DiecastXpress <span style={{ color: '#dc2626' }}>Blog</span>
+                drip <span style={{ color: '#dc2626' }}>Blog</span>
               </h1>
               <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)', maxWidth: '520px', margin: '0 auto 2rem', lineHeight: '1.65' }}>
                 Collecting guides, news, reviews & tips for Hot Wheels fans and diecast collectors across India.
@@ -463,7 +463,7 @@ export default function BlogPage({ cartItemCount, onOpenCart }) {
             <a href="#contact">Contact</a>
           </div>
           <p style={{ fontSize: '0.72rem', opacity: 0.5, marginTop: '1rem' }}>
-            © {new Date().getFullYear()} DiecastXpress. All Rights Reserved.
+            © {new Date().getFullYear()} drip. All Rights Reserved.
           </p>
         </div>
       </footer>

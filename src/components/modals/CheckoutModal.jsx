@@ -99,7 +99,7 @@ export default function CheckoutModal({ isOpen, onClose, cart, total, onOrderSuc
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
@@ -133,7 +133,7 @@ export default function CheckoutModal({ isOpen, onClose, cart, total, onOrderSuc
   const stepIndex = STEPS.indexOf(step);
 
   return (
-    <div className="modal-overlay" style={{ zIndex: 800, alignItems: 'center' }} onClick={() => {}}>
+    <div className="modal-overlay" style={{ zIndex: 800, alignItems: 'center' }} onClick={() => { }}>
       <div className="modal-content" style={{ maxWidth: '520px', maxHeight: '92vh', display: 'flex', flexDirection: 'column' }}>
 
         {/* ── HEADER ── */}
@@ -292,9 +292,9 @@ export default function CheckoutModal({ isOpen, onClose, cart, total, onOrderSuc
                   <p style={{ fontSize: '0.72rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#6b7280', marginBottom: '0.6rem' }}>Payment Method</p>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '0.6rem' }}>
                     {[
-                      { id: 'upi',        icon: <Smartphone size={20} />, label: 'UPI' },
-                      { id: 'card',       icon: <CreditCard size={20} />, label: 'Debit/Credit Card' },
-                      { id: 'netbanking', icon: <Building2 size={20} />,  label: 'Net Banking' },
+                      { id: 'upi', icon: <Smartphone size={20} />, label: 'UPI' },
+                      { id: 'card', icon: <CreditCard size={20} />, label: 'Debit/Credit Card' },
+                      { id: 'netbanking', icon: <Building2 size={20} />, label: 'Net Banking' },
                     ].map(m => (
                       <button
                         key={m.id}
@@ -447,7 +447,7 @@ export default function CheckoutModal({ isOpen, onClose, cart, total, onOrderSuc
                   <MessageSquare size={14} /> SMS Confirmation Sent
                 </div>
                 <p style={{ fontSize: '0.78rem', color: '#374151', lineHeight: '1.5' }}>
-                  <strong>DiecastXpress:</strong> Hi {placedOrder.customerName.split(' ')[0]}! Your order <strong>{placedOrder.id}</strong> for ₹{placedOrder.total.toFixed(2)} is confirmed. 
+                  <strong>drip:</strong> Hi {placedOrder.customerName.split(' ')[0]}! Your order <strong>{placedOrder.id}</strong> for ₹{placedOrder.total.toFixed(2)} is confirmed.
                   We'll pack it securely and ship it soon. Track your order on our website. Thank you! 🏎️
                 </p>
                 <p style={{ fontSize: '0.7rem', color: '#6b7280', marginTop: '0.3rem' }}>
@@ -458,7 +458,7 @@ export default function CheckoutModal({ isOpen, onClose, cart, total, onOrderSuc
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem', width: '100%' }}>
                 {[
                   { icon: <PackageCheck size={14} />, label: 'Payment', value: 'Successful ✓' },
-                  { icon: <ShieldCheck size={14} />,  label: 'Method',  value: paymentMethod.toUpperCase() },
+                  { icon: <ShieldCheck size={14} />, label: 'Method', value: paymentMethod.toUpperCase() },
                 ].map(row => (
                   <div key={row.label} style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '0.65rem 0.85rem' }}>
                     <div style={{ fontSize: '0.68rem', color: '#9ca3af', fontWeight: '700', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '0.3rem', marginBottom: '0.2rem' }}>

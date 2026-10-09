@@ -93,7 +93,7 @@ export default function AuthModal({ isOpen, onClose, defaultTab = 'login' }) {
         <div style={{ padding: '1.25rem 1.5rem 1.5rem' }}>
           {/* Logo */}
           <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
-            <img src="/logo.png" alt="DiecastXpress" style={{ height: 40, objectFit: 'contain' }} />
+            <img src="/logo.png" alt="drip" style={{ height: 40, objectFit: 'contain' }} />
             <p style={{ fontSize: '0.78rem', color: '#9ca3af', marginTop: '0.3rem' }}>
               {tab === 'login' ? 'Welcome back, collector!' : 'Join India\'s diecast community!'}
             </p>

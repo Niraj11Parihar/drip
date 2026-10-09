@@ -1,194 +1,184 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, ClipboardList, ChevronDown, Search, Menu, X } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
-import AuthModal from '../modals/AuthModal';
+import React, { useEffect, useState } from 'react';
+import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { trackEvent } from '../utils/analytics';
 
-export default function Header({ cartItemCount, onOpenCart, showSearch, searchValue, onSearchChange }) {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const [authOpen, setAuthOpen] = useState(false);
-  const [authTab, setAuthTab] = useState('login');
-  const [dropOpen, setDropOpen] = useState(false);
+export default function Header({ onOpenResearchModal }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const openLogin = () => { setAuthTab('login'); setAuthOpen(true); setDropOpen(false); setMobileMenuOpen(false); };
-  const openRegister = () => { setAuthTab('register'); setAuthOpen(true); setMobileMenuOpen(false); };
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 18);
+    };
 
-  const handleLogout = () => {
-    logout();
-    setDropOpen(false);
-    navigate('/');
-  };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const navLinks = [
-    { label: 'Home', href: '/' },
-    { label: 'Shop All', href: '/#catalog-section' },
-    { label: 'New Arrivals', href: '/#new-arrivals' },
-    { label: '📝 Blog', href: '/blog' },
-    { label: 'Pre-Order', href: '/#pre-order' },
-    { label: 'Contact', href: '/#contact' },
+    {
+      href: '#products',
+      label: 'Products',
+    },
+    {
+      href: '#health-benefits',
+      label: 'Benefits',
+    },
+    {
+      href: '#why-honey',
+      label: 'Why Honey',
+    },
+    {
+      href: '#faq',
+      label: 'FAQ',
+    },
   ];
+
+  const handleNavClick = (target, label) => {
+    trackEvent('navigation_click', {
+      label,
+      target,
+    });
+
+    setMobileMenuOpen(false);
+  };
+
+  const handleResearchClick = () => {
+    trackEvent('hero_cta_click', {
+      source: 'header_nav',
+      cta: 'join_athlete_test',
+    });
+
+    onOpenResearchModal();
+    setMobileMenuOpen(false);
+  };
 
   return (
     <>
-      <div className="announcement-bar">
-        🔥 Free Shipping on Orders Over ₹999 &bull; 100% Authentic Diecast Cars &bull; COD Available Across India
-      </div>
+      <header
+        className={`bb-header ${scrolled ? 'bb-header--scrolled' : ''}`}
+      >
+        <div className="container bb-header__inner">
 
-      <header className="header">
-        <div className="header-container">
-          {/* Logo */}
-          <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-            <img src="/logo.png" alt="DiecastXpress Logo" />
-          </div>
-
-          {/* Search (optional) */}
-          {showSearch && (
-            <div className="header-search-wrapper" style={{ position: 'relative', flex: 1, maxWidth: '420px', margin: '0 1rem' }}>
-              <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} size={16} />
-              <input
-                type="search"
-                placeholder="Search Hot Wheels, Majorette, Matchbox..."
-                className="form-control"
-                style={{ paddingLeft: '36px', height: '40px', fontSize: '0.83rem' }}
-                value={searchValue}
-                onChange={e => onSearchChange(e.target.value)}
-              />
+          {/* BRAND */}
+          <a
+            href="#"
+            className="bb-header__brand"
+            onClick={() => handleNavClick('#', 'logo')}
+            aria-label="drip Energy Honey home"
+          >
+            <div className="bb-header__brand-mark">
+              <span className="bb-header__brand-dot" />
+              <span className="bb-header__brand-dot" />
+              <span className="bb-header__brand-dot" />
             </div>
-          )}
 
-          <div className="header-actions">
-            {/* Cart */}
-            <button className="cart-trigger" onClick={onOpenCart} id="cart-button" aria-label="Open cart">
-              <ShoppingCart size={22} />
-              {cartItemCount > 0 && <span className="cart-count">{cartItemCount}</span>}
-            </button>
+            <div className="bb-header__brand-copy">
+              <span className="bb-header__brand-name">
+                drip
+              </span>
 
-            {/* Auth area */}
-            {user ? (
-              <div style={{ position: 'relative' }}>
-                <button
-                  onClick={() => setDropOpen(d => !d)}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: '0.45rem',
-                    background: '#f9fafb', border: '1px solid #e5e7eb',
-                    borderRadius: '8px', padding: '0.4rem 0.75rem', cursor: 'pointer',
-                    fontFamily: 'Outfit, sans-serif', fontWeight: '600', fontSize: '0.82rem',
-                    color: '#1f2937', transition: 'all 0.15s',
-                  }}
+              <span className="bb-header__brand-subtitle">
+                ENERGY HONEY
+              </span>
+            </div>
+          </a>
+
+          {/* DESKTOP NAVIGATION */}
+          <nav
+            className="bb-header__desktop-nav"
+            aria-label="Main navigation"
+          >
+            <div className="bb-header__links">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="bb-header__link"
+                  onClick={() =>
+                    handleNavClick(link.href, link.label)
+                  }
                 >
-                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: '800', fontSize: '0.75rem', flexShrink: 0 }}>
-                    {user.name?.charAt(0).toUpperCase() || 'U'}
-                  </div>
-                  <span className="d-none-mobile" style={{ maxWidth: 90, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {user.name?.split(' ')[0]}
-                  </span>
-                  <ChevronDown size={14} className="d-none-mobile" style={{ transition: 'transform 0.2s', transform: dropOpen ? 'rotate(180deg)' : 'none' }} />
-                </button>
+                  {link.label}
+                </a>
+              ))}
+            </div>
 
-                {dropOpen && (
-                  <div style={{
-                    position: 'absolute', top: 'calc(100% + 8px)', right: 0,
-                    background: '#fff', border: '1px solid #e5e7eb', borderRadius: '10px',
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.10)', zIndex: 500, minWidth: 180,
-                    animation: 'slideUp 0.15s ease',
-                  }}>
-                    <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid #f3f4f6' }}>
-                      <p style={{ fontWeight: '700', fontSize: '0.85rem', color: '#1f2937' }}>{user.name}</p>
-                      <p style={{ fontSize: '0.72rem', color: '#9ca3af', marginTop: '1px' }}>{user.email}</p>
-                    </div>
-                    <div style={{ padding: '0.4rem' }}>
-                      <button
-                        onClick={() => { navigate('/orders'); setDropOpen(false); }}
-                        style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.55rem 0.75rem', background: 'none', border: 'none', cursor: 'pointer', borderRadius: '7px', fontSize: '0.82rem', fontWeight: '600', color: '#374151', transition: 'background 0.1s' }}
-                        onMouseEnter={e => e.currentTarget.style.background = '#f9fafb'}
-                        onMouseLeave={e => e.currentTarget.style.background = 'none'}
-                      >
-                        <ClipboardList size={15} /> My Orders
-                      </button>
-                      <button
-                        onClick={handleLogout}
-                        style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.55rem 0.75rem', background: 'none', border: 'none', cursor: 'pointer', borderRadius: '7px', fontSize: '0.82rem', fontWeight: '600', color: '#dc2626', transition: 'background 0.1s' }}
-                        onMouseEnter={e => e.currentTarget.style.background = '#fff5f5'}
-                        onMouseLeave={e => e.currentTarget.style.background = 'none'}
-                      >
-                        <LogOut size={15} /> Sign Out
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                <button
-                  onClick={openLogin}
-                  className="d-none-mobile"
-                  style={{ background: 'none', border: '1px solid #e5e7eb', borderRadius: '7px', padding: '0.4rem 0.85rem', cursor: 'pointer', fontFamily: 'Outfit, sans-serif', fontWeight: '700', fontSize: '0.8rem', color: '#374151', transition: 'all 0.15s' }}
-                >
-                  Sign In
-                </button>
-                <button
-                  onClick={openRegister}
-                  className="btn btn-buy d-none-mobile"
-                  style={{ width: 'auto', padding: '0.4rem 0.85rem', fontSize: '0.8rem' }}
-                >
-                  Register
-                </button>
-                {/* Mobile: user icon shortcut */}
-                <button onClick={openLogin} className="cart-trigger mobile-user-btn" aria-label="Sign in">
-                  <User size={20} />
-                </button>
-              </div>
-            )}
-
-            {/* Hamburger for mobile nav */}
             <button
-              className="hamburger-btn"
-              onClick={() => setMobileMenuOpen(m => !m)}
-              aria-label="Toggle menu"
+              type="button"
+              className="bb-header__cta"
+              onClick={handleResearchClick}
+              id="header-cta-btn"
             >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              JOIN ATHLETE TEST
+              <ArrowUpRight size={15} strokeWidth={2} />
             </button>
-          </div>
+          </nav>
+
+          {/* MOBILE BUTTON */}
+          <button
+            type="button"
+            className="bb-header__menu-button"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            aria-label={
+              mobileMenuOpen
+                ? 'Close navigation'
+                : 'Open navigation'
+            }
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? (
+              <X size={22} />
+            ) : (
+              <Menu size={22} />
+            )}
+          </button>
+
         </div>
 
-        {/* ── SUB NAVIGATION BAR (desktop only) ── */}
-        <nav className="sub-nav">
-          <div className="sub-nav-inner">
-            {navLinks.map(link => (
-              <a key={link.label} href={link.href} className="sub-nav-link">
-                {link.label}
-              </a>
-            ))}
-          </div>
-        </nav>
+        {/* MOBILE NAVIGATION */}
+        <div
+          className={`bb-mobile-nav ${mobileMenuOpen ? 'bb-mobile-nav--open' : ''
+            }`}
+        >
+          <div className="container bb-mobile-nav__inner">
 
-        {/* ── MOBILE MENU DRAWER ── */}
-        {mobileMenuOpen && (
-          <div className="mobile-nav-drawer">
-            {navLinks.map(link => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="mobile-nav-link"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-              </a>
-            ))}
-            {!user && (
-              <div style={{ borderTop: '1px solid #f3f4f6', paddingTop: '0.75rem', marginTop: '0.25rem', display: 'flex', gap: '0.5rem' }}>
-                <button onClick={openLogin} style={{ flex: 1, background: 'none', border: '1px solid #e5e7eb', borderRadius: '7px', padding: '0.55rem', cursor: 'pointer', fontWeight: '700', fontSize: '0.82rem', color: '#374151' }}>Sign In</button>
-                <button onClick={openRegister} className="btn btn-buy" style={{ flex: 1, padding: '0.55rem', fontSize: '0.82rem' }}>Register</button>
-              </div>
-            )}
+            <nav className="bb-mobile-nav__links">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="bb-mobile-nav__link"
+                  onClick={() =>
+                    handleNavClick(link.href, link.label)
+                  }
+                >
+                  <span>{link.label}</span>
+                  <span className="bb-mobile-nav__arrow">↗</span>
+                </a>
+              ))}
+            </nav>
+
+            <button
+              type="button"
+              className="bb-mobile-nav__cta"
+              onClick={handleResearchClick}
+            >
+              JOIN ATHLETE TEST
+              <ArrowUpRight size={16} />
+            </button>
+
+            <p className="bb-mobile-nav__note">
+              RAW · 0mg caffeine &nbsp;&nbsp; / &nbsp;&nbsp;
+              RUSH · 50mg caffeine
+            </p>
+
           </div>
-        )}
+        </div>
       </header>
-
-      <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} defaultTab={authTab} />
     </>
   );
 }

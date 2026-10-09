@@ -21,7 +21,7 @@ export default function MyOrdersPage({ cartItemCount, onOpenCart }) {
   const [expanded, setExpanded] = useState(null);
 
   useEffect(() => {
-    document.title = 'My Orders | DiecastXpress';
+    document.title = 'My Orders | drip';
   }, []);
 
   useEffect(() => {
@@ -192,7 +192,7 @@ export default function MyOrdersPage({ cartItemCount, onOpenCart }) {
           <div className="footer-links" style={{ marginTop: '0.75rem' }}>
             <a href="/">Home</a><a href="#">Track Order</a><a href="#">Contact Us</a>
           </div>
-          <p style={{ fontSize: '0.72rem', opacity: 0.5, marginTop: '1rem' }}>© {new Date().getFullYear()} DiecastXpress. All Rights Reserved.</p>
+          <p style={{ fontSize: '0.72rem', opacity: 0.5, marginTop: '1rem' }}>© {new Date().getFullYear()} drip. All Rights Reserved.</p>
         </div>
       </footer>
     </>
